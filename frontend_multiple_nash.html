@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nash Equilibrium Finder</title>
+</head>
+<body>
+
+<h3>Enter Matrix Dimensions:</h3>
+
+<!-- Input for matrix dimensions and button to generate matrix -->
+<label for="dimension">Number of strategies for each player:</label>
+<input type="number" id="dimension" placeholder="e.g. 2 for a 2x2 matrix">
+<button onclick="generateMatrix()">Generate Matrix</button>
+
+<div id="matrixInput"></div>
+<button onclick="calculateNash()" style="display:none;" id="calculateButton">Find Nash Equilibria</button>
+<div id="result"></div>
+
+<script>
+function generateMatrix() {
+    const dimension = document.getElementById('dimension').value;
+    let matrixHTML = '<h3>Enter Payoff Matrix Values:</h3><table border="1">';
+
+    for (let i = 0; i < dimension; i++) {
+        matrixHTML += '<tr>';
+        for (let j = 0; j < dimension; j++) {
+            matrixHTML += '<td><input type="number" placeholder="P1" id="p1_' + i + '_' + j + '"><input type="number" placeholder="P2" id="p2_' + i + '_' + j + '"></td>';
+        }
+        matrixHTML += '</tr>';
+    }
+    matrixHTML += '</table>';
+    
+    document.getElementById('matrixInput').innerHTML = matrixHTML;
+    document.getElementById('calculateButton').style.display = 'block';
+}
+
+function calculateNash() {
+    const dimension = document.getElementById('dimension').value;
+    let matrix = [];
+    for (let i = 0; i < dimension; i++) {
+        let row = [];
+        for (let j = 0; j < dimension; j++) {
+            let p1Value = document.getElementById('p1_' + i + '_' + j).value;
+            let p2Value = document.getElementById('p2_' + i + '_' + j).value;
+            row.push([parseInt(p1Value), parseInt(p2Value)]);
+        }
+        matrix.push(row);
+    }
+
+    // Send values to backend for processing
+    fetch('/calculate', {
+        method: 'POST',
+        body: JSON.stringify({matrix: matrix}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display results
+        let resultText = 'Nash Equilibria: ';
+        for (let equilibrium of data.equilibria) {
+            resultText += '(' + (equilibrium[0] + 1) + ', ' + (equilibrium[1] + 1) + ') ';
+        }
+        document.getElementById('result').innerText = resultText;
+    });
+}
+</script>
+
+</body>
+</html>
