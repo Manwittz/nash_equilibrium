@@ -24,3 +24,12 @@ $(TARGET_MIXED): $(SOURCES_MIXED)
 # Clean target
 clean:
 	rm -f $(TARGET_NASH) $(TARGET_MIXED)
+
+
+# Commands to run Python backends
+run-backend-dynamic:
+	./backend_dynamic.py
+run-backend-multiple-nash:
+	./backend_multiple_nash.py
+run-backend:
+	./backend.py
