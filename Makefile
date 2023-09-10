@@ -5,18 +5,22 @@ CXX = g++
 # Compiler flags
 CXXFLAGS = -std=c++11 -Wall -Wextra
 
-# Name of the target executable
-TARGET = nash_equilibrium
+# Source files and targets
+SOURCES_NASH = nash.cpp
+TARGET_NASH = nash_equilibrium
 
-# Source files
-SOURCES = nash.cpp
+SOURCES_MIXED = mixed_strategy.cpp
+TARGET_MIXED = mixed_strategy
 
-# Build target
-all: $(TARGET)
+# Build targets
+all: $(TARGET_NASH) $(TARGET_MIXED)
 
-$(TARGET): $(SOURCES)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCES)
+$(TARGET_NASH): $(SOURCES_NASH)
+	$(CXX) $(CXXFLAGS) -o $(TARGET_NASH) $(SOURCES_NASH)
+
+$(TARGET_MIXED): $(SOURCES_MIXED)
+	$(CXX) $(CXXFLAGS) -o $(TARGET_MIXED) $(SOURCES_MIXED)
 
 # Clean target
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET_NASH) $(TARGET_MIXED)
