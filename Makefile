@@ -9,7 +9,7 @@ CXXFLAGS = -std=c++11 -Wall -Wextra
 TARGET = nash_equilibrium
 
 # Source files
-SOURCES = nash eq.cpp
+SOURCES = nash.cpp
 
 # Build target
 all: $(TARGET)
