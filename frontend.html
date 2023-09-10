@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nash Equilibrium Finder</title>
+</head>
+<body>
+
+<h3>Enter Payoff Matrix Values:</h3>
+
+<!-- Input fields for matrix values -->
+<table border="1">
+    <tr>
+        <td><input id="a" type="number" placeholder="a"></td>
+        <td><input id="c" type="number" placeholder="c"></td>
+    </tr>
+    <tr>
+        <td><input id="e" type="number" placeholder="e"></td>
+        <td><input id="g" type="number" placeholder="g"></td>
+    </tr>
+</table>
+
+<button onclick="calculateNash()">Find Nash Equilibrium</button>
+
+<div id="result"></div>
+
+<script>
+function calculateNash() {
+    // Collect values from input fields
+    let matrix = {
+        a: document.getElementById('a').value,
+        c: document.getElementById('c').value,
+        e: document.getElementById('e').value,
+        g: document.getElementById('g').value
+    };
+
+    // Send values to backend for processing
+    fetch('/calculate', {
+        method: 'POST',
+        body: JSON.stringify(matrix),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display results
+        document.getElementById('result').innerText = 'Mixed Strategy Nash Equilibrium: p = ' + data.p + ', q = ' + data.q;
+    });
+}
+</script>
+
+</body>
+</html>
